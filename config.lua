@@ -3,6 +3,7 @@ vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.relativenumber = true
 vim.opt.colorcolumn = "88"
+vim.opt.shell = "/usr/bin/zsh"
 vim.opt.foldmethod = "expr" -- folding set to "expr" for treesitter based folding
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- set to "nvim_treesitter#foldexpr()" for treesitter based folding
 -- FIX: these are not respected, perhaps due to foldexpr func
@@ -10,7 +11,7 @@ vim.opt.foldlevelstart = 99
 
 -- general
 lvim.log.level = "warn"
--- NOTE: <SPC-b-w> to prevent formatting
+-- NOTE: <SPC-b-W> to prevent formatting
 lvim.format_on_save = {
 	enabled = true,
 	-- pattern = "*.lua",
@@ -41,7 +42,8 @@ lvim.builtin.alpha.mode = "dashboard"
 table.insert(
 	-- icons: https://github.com/LunarVim/LunarVim/blob/master/lua/lvim/icons.lua
 	lvim.builtin.alpha.dashboard.section.buttons.entries,
-	{ "s", lvim.icons.ui.History .. "  Restore Last Session", "<cmd>lua require('persistence').load()<cr>" }
+	-- NOTE: how to make this two letters (i.e. "Sl"; the obvious doesn't work)
+	{ "l", lvim.icons.ui.History .. "  Restore Last Session", "<cmd>lua require('persistence').load()<cr>" }
 )
 
 -- Automatically install missing parsers when entering buffer
@@ -60,10 +62,14 @@ lvim.builtin.test_runner = { active = true, runner = "neotest" }
 
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 
+-- TEST: try
+-- reload("user.autocommands")
+require("user.autocommands").config()
+
 reload("user.keymaps")
 reload("user.which_key")
 require("user.plugins").config()
-reload("user.autocommands")
+-- reload("user.autocommands")
 
 -- NOTE: plugin-specific options
 
@@ -198,15 +204,42 @@ gopher.setup({
 })
 
 -- -- generic LSP settings <https://www.lunarvim.org/docs/languages#lsp-support>
-lvim.lsp.diagnostics.virtual_text = true
+lvim.lsp.diagnostics.virtual_text = false
 -- --- disable automatic installation of servers
 -- lvim.lsp.installer.setup.automatic_installation = false
 
 -- ---configure a server manually. IMPORTANT: Requires `:LvimCacheReset` to take effect
 -- ---see the full default list `:lua =lvim.lsp.automatic_configuration.skipped_servers`
--- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" })
--- local opts = {} -- check the lspconfig documentation for a list of all possible options
--- require("lvim.lsp.manager").setup("pyright", opts)
+
+-- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "bashls", "shellcheck" })
+-- -- check the lspconfig documentation for a list of all possible options
+-- local opts = {
+-- 	filetypes = { "sh", "zsh", "bash" },
+-- }
+-- -- NOTE: make zsh use same LS as bash and sh
+-- require("lvim.lsp.manager").setup("bashls", opts)
+-- require("lvim.lsp.manager").setup("shellcheck", opts)
+
+local formatters = require("lvim.lsp.null-ls.formatters")
+formatters.setup({
+	{ command = "shfmt", filetypes = { "sh", "zsh", "bash" } },
+})
+
+vim.filetype.add({
+	extension = {
+		zsh = "zsh",
+	},
+})
+
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "bashls" })
+
+-- local lsp_manager = require("lvim.lsp.manager") -- NOTE: already defined above; uncomment when refactored to file
+lsp_manager.setup("bashls", {
+	-- NOTE: make zsh use same LS as bash and sh
+	filetypes = { "sh", "zsh", "bash" },
+	on_init = require("lvim.lsp").common_on_init,
+	capabilities = require("lvim.lsp").common_capabilities(),
+})
 
 -- ---remove a server from the skipped list, e.g. eslint, or emmet_ls. IMPORTANT: Requires `:LvimCacheReset` to take effect
 -- ---`:LvimInfo` lists which server(s) are skipped for the current filetype
@@ -231,11 +264,13 @@ formatters.setup({
 	{ command = "black", filetypes = { "python" } },
 	{ command = "goimports", filetypes = { "go" } },
 	{ command = "gofumpt", filetypes = { "go" } },
-	-- {
-	--   command = "prettier",
-	--   extra_args = { "--print-width", "100" },
-	--   filetypes = { "typescript", "typescriptreact" },
-	-- },
+	{ command = "shfmt", filetypes = { "sh", "zsh", "bash" } },
+	{
+		command = "prettier",
+		-- extra_args = { "--print-width", "100" },
+		-- filetypes = { "typescript", "typescriptreact" },
+		filetypes = { "markdown", "md" },
+	},
 })
 local linters = require("lvim.lsp.null-ls.linters")
 linters.setup({
@@ -243,6 +278,7 @@ linters.setup({
 	{
 		command = "shellcheck",
 		args = { "--severity", "warning" },
+		filetypes = { "sh", "zsh", "bash" },
 	},
 	{
 		command = "codespell",

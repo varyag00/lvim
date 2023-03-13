@@ -1,9 +1,10 @@
 -- -- Use which-key to add extra bindings with the leader-key prefix
 -- TODO: consider adding window management keybindings
--- lvim.builtin.which_key.mappings["W"] = { "<cmd>noautocmd w<cr>", "Save without formatting" }
+lvim.builtin.which_key.mappings["W"] = { "<cmd>noautocmd w<cr>", "Save without formatting" }
 
-lvim.builtin.which_key.mappings["<Tab>"] = { "za", "Toggle fold" }
-lvim.builtin.which_key.mappings["<S-Tab>"] = { "zi", "Toggle all folds" }
+-- NOTE: No point including these when available in normal mode
+-- lvim.builtin.which_key.mappings["<Tab>"] = { "za", "Toggle fold" }
+-- lvim.builtin.which_key.mappings["<S-Tab>"] = { "zi", "Toggle all folds" }
 
 lvim.builtin.which_key.mappings["i"] = {
 	name = "+Codi",
@@ -23,14 +24,22 @@ lvim.builtin.which_key.mappings["T"] = {
 	d = { "<cmd>Trouble document_diagnostics<cr>", "Diagnostics" },
 	q = { "<cmd>Trouble quickfix<cr>", "QuickFix" },
 	l = { "<cmd>Trouble loclist<cr>", "LocationList" },
-	w = { "<cmd>Trouble workspace_diagnostics<cr>", "Wordspace Diagnostics" },
+	w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
+	t = { "<cmd>TodoLocList<cr>", "TODO Location List (Project)" },
+	T = { "<cmd>TodoTelescope<cr>", "TODO Telescope List (Project)" },
 }
 
+-- TODO: virtual text toggle would be nice
+-- lvim.builtin.which_key.mappings["l"]["V"] = "<cmd>"
+
+-- "<cmd>Telescope buffers<cr>"
+lvim.builtin.which_key.mappings["b"]["b"] = lvim.builtin.which_key.mappings["b"]["f"]
 -- buffer management
 -- already set
 -- lvim.builtin.which_key.mappings["bn"] = {
 --   ":bnext<cr>", "next"
 -- }
+
 -- TODO: test if these are even needed
 lvim.builtin.which_key.mappings["bp"] = {
 	":bprev<cr>",
@@ -55,12 +64,12 @@ lvim.builtin.which_key.mappings["S"] = {
 -- ranger
 lvim.builtin.which_key.mappings["R"] = { "<cmd>RnvimrToggle<CR>", "Open Ranger" }
 
-lvim.builtin.which_key.mappings["M"] = { "<cmd>messages<CR>", "View messages" }
+lvim.builtin.which_key.mappings["L"]["M"] = { "<cmd>messages<CR>", "View messages" }
 
 -- TODO: move to lsp options
 lvim.builtin.which_key.mappings["l"]["o"] = { "<cmd>SymbolsOutline<CR>", "Symbols outline" }
 
 -- themes
 -- FIX: these get overwritten on buffer save (config reload)
-lvim.builtin.which_key["L"]["L"] = { "<cmd>Catppuccin latte<CR>", "Light theme" }
-lvim.builtin.which_key["L"]["D"] = { "<cmd>Catppuccin frappe<CR>", "Dark theme" }
+lvim.builtin.which_key.mappings["L"]["L"] = { "<cmd>Catppuccin latte<CR>", "Light theme" }
+lvim.builtin.which_key.mappings["L"]["D"] = { "<cmd>Catppuccin frappe<CR>", "Dark theme" }

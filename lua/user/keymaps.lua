@@ -8,8 +8,18 @@
 lvim.leader = "space"
 
 -- folding
-lvim.keys.normal_mode["<Tab>"] = "<cmd>normal za<cr>"
-lvim.keys.normal_mode["<S-Tab>"] = "<cmd>normal zi<cr>"
+-- FIX: breaks <C-i>, see https://github.com/neovim/neovim/issues/5916
+--  lvim.keys.normal_mode["<Tab>"] = "<cmd>normal za<cr>"
+lvim.keys.normal_mode["<S-Tab>"] = "<cmd>normal za<cr>"
+lvim.keys.normal_mode["<C-Tab>"] = "<cmd>normal zi<cr>"
+
+-- non-standard, but consistent with my obsidian setup
+lvim.keys.normal_mode["zo"] = "<cmd>normal za<cr>"
+
+-- C-backspace (i.e. C-H in alacritty) to delete word
+lvim.keys.insert_mode["<C-H>"] = "<cmd>normal dB<cr>"
+-- delete word forward because why not
+lvim.keys.insert_mode["<C-L>"] = "<cmd>normal dW<cr>"
 
 -- C-s to save in any mode
 lvim.keys.insert_mode["<C-s>"] = "<cmd>w<cr>"
@@ -18,10 +28,8 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<A-w>"] = "<cmd>BufferKill<cr>"
 lvim.keys.insert_mode["<A-w>"] = "<cmd>BufferKill<cr>"
 
-lvim.keys.insert_mode = {
-	["jk"] = "<Esc>",
-	["jj"] = "<Esc>",
-}
+lvim.keys.insert_mode["jk"] = "<Esc>"
+lvim.keys.insert_mode["jj"] = "<Esc>"
 
 -- navigate between buffers with alt
 lvim.keys.normal_mode["<A-h>"] = ":bprev<cr>"
@@ -40,6 +48,9 @@ lvim.keys.insert_mode["<M-k>"] = false
 
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 -- lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
+
+-- TODO: navigate windows with C-num
+-- lvim.keys.normal_mode["<C-1>"] = ""
 
 -- FIX: comment using on <C-/>. Doesn't work
 -- lvim.keys.normal_mode["<C-/>"] = "<Plug>(comment_toggle_linewise)"
