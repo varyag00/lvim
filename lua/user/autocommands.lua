@@ -33,17 +33,17 @@ M.config = function()
 				command = "setlocal wrap",
 			},
 		},
-		{
-			"TextYankPost",
-			{
-				group = "_general_settings",
-				pattern = "*",
-				desc = "Highlight text on yank",
-				callback = function()
-					require("vim.highlight").on_yank({ higroup = "Search", timeout = 40 })
-				end,
-			},
-		},
+		-- {
+		-- 	"TextYankPost",
+		-- 	{
+		-- 		group = "_general_settings",
+		-- 		pattern = "*",
+		-- 		desc = "Highlight text on yank",
+		-- 		callback = function()
+		-- 			require("vim.highlight").on_yank({ higroup = "Search", timeout = 40 })
+		-- 		end,
+		-- 	},
+		-- },
 		-- {
 		-- 	"VimEnter", -- TODO: there's gotta be a better autocmd. This requires using :e to enter file
 		-- 	{

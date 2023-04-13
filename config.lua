@@ -2,7 +2,8 @@
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.relativenumber = true
-vim.opt.colorcolumn = "88"
+-- vim.opt.colorcolumn = "88"
+vim.opt.colorcolumn = "99999"
 vim.opt.shell = "/usr/bin/zsh"
 vim.opt.foldmethod = "expr" -- folding set to "expr" for treesitter based folding
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- set to "nvim_treesitter#foldexpr()" for treesitter based folding
@@ -23,10 +24,12 @@ lvim.format_on_save = {
 -- lvim.colorscheme = "catppuccin-latte" -- light
 -- lvim.colorscheme = "catppuccin-frappe" -- medium
 lvim.colorscheme = "catppuccin-macchiato" -- dark
+-- lvim.colorscheme = "catppuccin-mocha" -- darkest
 -- lvim.colorscheme = "tokyonight"
 -- TODO: unused flag, see https://github.com/abzcoding/lvim#theme
 lvim.builtin.time_based_themes = false
 
+-- lvim.builtin.lualine.style = "lua"
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
@@ -38,13 +41,15 @@ lvim.builtin.dap.active = true -- (default: false)
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 
+-- FIX: broken as of 03/15/2023
 -- added dashboard options
-table.insert(
-	-- icons: https://github.com/LunarVim/LunarVim/blob/master/lua/lvim/icons.lua
-	lvim.builtin.alpha.dashboard.section.buttons.entries,
-	-- NOTE: how to make this two letters (i.e. "Sl"; the obvious doesn't work)
-	{ "l", lvim.icons.ui.History .. "  Restore Last Session", "<cmd>lua require('persistence').load()<cr>" }
-)
+-- table.insert {
+--   -- icons: https://github.com/LunarVim/LunarVim/blob/master/lua/lvim/icons.lua
+--   -- lvim.builtin.alpha.dashboard.section.buttons.val,
+--   list = lvim.builtin.alpha.dashboard.section.button,
+--   -- NOTE: how to make this two letters (i.e. "Sl"; the obvious doesn't work)
+--   value = { "l", lvim.icons.ui.History .. "  Restore Last Session", "<cmd>lua require('persistence').load()<cr>" }
+-- }
 
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
