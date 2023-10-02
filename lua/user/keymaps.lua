@@ -27,6 +27,7 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 
 lvim.keys.normal_mode["<A-w>"] = "<cmd>BufferKill<cr>"
 lvim.keys.insert_mode["<A-w>"] = "<cmd>BufferKill<cr>"
+lvim.keys.insert_mode["<C-W>"] = "<cmd>BufferKill<cr>"
 
 lvim.keys.insert_mode["jk"] = "<Esc>"
 lvim.keys.insert_mode["jj"] = "<Esc>"
@@ -45,6 +46,12 @@ lvim.keys.normal_mode["<M-j>"] = false
 lvim.keys.insert_mode["<M-j>"] = false
 lvim.keys.normal_mode["<M-k>"] = false
 lvim.keys.insert_mode["<M-k>"] = false
+
+-- NOTE: vscode config QoL changes
+-- NOTE: no way to bind C-S-O differently from C-O in nvim/vim so I'm only doing these for insert mode, but check out this post for a method that uses terminal chars
+-- https://old.reddit.com/r/neovim/comments/mbj8m5/how_to_setup_ctrlshiftkey_mappings_in_neovim_and/
+lvim.keys.insert_mode["<C-E>"] = "<cmd>Telescope find_files<cr>"
+lvim.keys.insert_mode["<C-O>"] = "<cmd>SymbolsOutline<cr>"
 
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 -- lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
